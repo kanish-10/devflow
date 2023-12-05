@@ -1,9 +1,53 @@
+import QuestionCard from "@/components/cards/QuestionCard";
+import NoResult from "@/components/shared/NoResult";
 import Filter from "@/components/shared/filter/Filter";
 import HomeFilters from "@/components/shared/filter/HomeFilters";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
 import Link from "next/link";
+
+const questions = [
+  {
+    _id: "1",
+    title: "How to create a new project in react?",
+    tags: [
+      { _id: "1", name: "python" },
+      { _id: "2", name: "SQl" },
+    ],
+    author: { _id: "2", name: "Hitler", picture: "img" },
+    upvotes: 10,
+    views: 100,
+    answers: [{}],
+    createdAt: new Date("2021-09-24T05:32:13.000Z"),
+  },
+  {
+    _id: "2",
+    title: "How to create a new project in nextjs?",
+    tags: [
+      { _id: "1", name: "JS" },
+      { _id: "2", name: "Mongo" },
+    ],
+    author: { _id: "2", name: "Hitler", picture: "img" },
+    upvotes: 10,
+    views: 100,
+    answers: [{}],
+    createdAt: new Date("2021-09-24T05:32:13.000Z"),
+  },
+  {
+    _id: "1",
+    title: "How to create a new project in threejs?",
+    tags: [
+      { _id: "1", name: "3d" },
+      { _id: "2", name: "Website" },
+    ],
+    author: { _id: "2", name: "Hitler", picture: "img" },
+    upvotes: 10,
+    views: 100,
+    answers: [{}],
+    createdAt: new Date("2021-09-24T05:32:13.000Z"),
+  },
+];
 
 export default function Home() {
   return (
@@ -33,6 +77,30 @@ export default function Home() {
         />
       </div>
       <HomeFilters />
+      <div className="mt-10 flex w-full flex-col gap-6">
+        {questions.length > 0 ? (
+          questions.map((question) => (
+            <QuestionCard
+              key={question._id}
+              _id={question._id}
+              title={question.title}
+              tags={question.tags}
+              author={question.author}
+              upvotes={question.upvotes}
+              views={question.views}
+              answers={question.answers}
+              createdAt={question.createdAt}
+            />
+          ))
+        ) : (
+          <NoResult
+            title="There's no question to show"
+            description="Be the first to break the silence! 🚀 Ask a question and kickstart the discussion. Our query could be the next big thing others learn from. Get involved! 💡"
+            link="/ask-question"
+            linkTitle="Ask a question"
+          />
+        )}
+      </div>
     </>
   );
 }

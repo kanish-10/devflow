@@ -5,19 +5,19 @@ import Tag from "../Tag";
 
 const RightSidebar = () => {
   const hotQuestion = [
-    { _id: 1, title: "Question title" },
-    { _id: 1, title: "Question title" },
-    { _id: 1, title: "Question title" },
-    { _id: 1, title: "Question title" },
-    { _id: 1, title: "Question title" },
+    { _id: "1", title: "Question title" },
+    { _id: "1", title: "Question title" },
+    { _id: "1", title: "Question title" },
+    { _id: "1", title: "Question title" },
+    { _id: "1", title: "Question title" },
   ];
 
   const popularTags = [
-    { _id: 1, name: "javascript", totalQuestions: 5 },
-    { _id: 1, name: "javascript", totalQuestions: 5 },
-    { _id: 1, name: "javascript", totalQuestions: 5 },
-    { _id: 1, name: "javascript", totalQuestions: 5 },
-    { _id: 1, name: "javascript", totalQuestions: 5 },
+    { _id: "1", name: "javascript", totalQuestions: 5 },
+    { _id: "1", name: "javascript", totalQuestions: 5 },
+    { _id: "1", name: "javascript", totalQuestions: 5 },
+    { _id: "1", name: "javascript", totalQuestions: 5 },
+    { _id: "1", name: "javascript", totalQuestions: 5 },
   ];
 
   return (
