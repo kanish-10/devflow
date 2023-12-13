@@ -22,6 +22,7 @@ import { Badge } from "@/components/ui/badge";
 
 import { QuestionFormSchema } from "@/lib/validations";
 import { useTheme } from "@/context/ThemeProvider";
+import { createQuestion } from "@/lib/actions/question.action";
 
 const QuestionForm = () => {
   const type: any = "create";
@@ -41,11 +42,14 @@ const QuestionForm = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof QuestionFormSchema>) {
+  async function onSubmit(values: z.infer<typeof QuestionFormSchema>) {
     setIsSubmitting(true);
     try {
       // make an async call to your API -> create question
       // contain all form data
+
+      await createQuestion();
+
       // navigate to home page
     } catch (error) {
     } finally {
