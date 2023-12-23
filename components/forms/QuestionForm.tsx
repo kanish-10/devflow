@@ -23,8 +23,15 @@ import { Badge } from "@/components/ui/badge";
 import { QuestionFormSchema } from "@/lib/validations";
 import { useTheme } from "@/context/ThemeProvider";
 import { createQuestion } from "@/lib/actions/question.action";
+import { useRouter } from "next/navigation";
 
-const QuestionForm = () => {
+interface Props {
+  mongoUserId: string;
+}
+
+const QuestionForm = ({ mongoUserId }: Props) => {
+  const router = useRouter();
+  // const path = usePathname();
   const type: any = "create";
   const { mode } = useTheme();
   const editorRef = useRef(null);
@@ -48,9 +55,15 @@ const QuestionForm = () => {
       // make an async call to your API -> create question
       // contain all form data
 
-      await createQuestion();
+      await createQuestion({
+        title: values.title,
+        content: values.explanation,
+        tags: values.tags,
+        author: JSON.parse(mongoUserId),
+      });
 
       // navigate to home page
+      router.push("/");
     } catch (error) {
     } finally {
       setIsSubmitting(false);
