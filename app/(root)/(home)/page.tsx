@@ -5,51 +5,12 @@ import HomeFilters from "@/components/shared/filter/HomeFilters";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
+import { getQuestions } from "@/lib/actions/question.action";
 import Link from "next/link";
 
-const questions = [
-  {
-    _id: "1",
-    title: "How to create a new project in react?",
-    tags: [
-      { _id: "1", name: "python" },
-      { _id: "2", name: "SQl" },
-    ],
-    author: { _id: "2", name: "Hitler", picture: "img" },
-    upvotes: 10,
-    views: 100,
-    answers: [{}],
-    createdAt: new Date("2021-09-24T05:32:13.000Z"),
-  },
-  {
-    _id: "2",
-    title: "How to create a new project in nextjs?",
-    tags: [
-      { _id: "1", name: "JS" },
-      { _id: "2", name: "Mongo" },
-    ],
-    author: { _id: "2", name: "Hitler", picture: "img" },
-    upvotes: 10,
-    views: 100,
-    answers: [{}],
-    createdAt: new Date("2021-09-24T05:32:13.000Z"),
-  },
-  {
-    _id: "1",
-    title: "How to create a new project in threejs?",
-    tags: [
-      { _id: "1", name: "3d" },
-      { _id: "2", name: "Website" },
-    ],
-    author: { _id: "2", name: "Hitler", picture: "img" },
-    upvotes: 10,
-    views: 100,
-    answers: [{}],
-    createdAt: new Date("2021-09-24T05:32:13.000Z"),
-  },
-];
+export default async function Home() {
+  const result = await getQuestions({});
 
-export default function Home() {
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between sm:flex-row">
@@ -78,8 +39,8 @@ export default function Home() {
       </div>
       <HomeFilters />
       <div className="mt-10 flex w-full flex-col gap-6">
-        {questions.length > 0 ? (
-          questions.map((question) => (
+        {result.questions.length > 0 ? (
+          result.questions.map((question) => (
             <QuestionCard
               key={question._id}
               _id={question._id}

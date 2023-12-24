@@ -23,7 +23,7 @@ import { Badge } from "@/components/ui/badge";
 import { QuestionFormSchema } from "@/lib/validations";
 import { useTheme } from "@/context/ThemeProvider";
 import { createQuestion } from "@/lib/actions/question.action";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface Props {
   mongoUserId: string;
@@ -31,7 +31,7 @@ interface Props {
 
 const QuestionForm = ({ mongoUserId }: Props) => {
   const router = useRouter();
-  // const path = usePathname();
+  const path = usePathname();
   const type: any = "create";
   const { mode } = useTheme();
   const editorRef = useRef(null);
@@ -60,6 +60,7 @@ const QuestionForm = ({ mongoUserId }: Props) => {
         content: values.explanation,
         tags: values.tags,
         author: JSON.parse(mongoUserId),
+        path,
       });
 
       // navigate to home page
