@@ -9,7 +9,7 @@ const AskQuestionPage = async () => {
 
   if (!userId) redirect("/sign-in");
 
-  const mongoUser = await getUserById({ userId: "12345" });
+  const mongoUser = await getUserById({ userId });
   console.log(mongoUser);
 
   return (
