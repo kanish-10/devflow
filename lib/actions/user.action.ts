@@ -9,12 +9,15 @@ import {
   DeleteUserParams,
   GetAllUsersParams,
   GetSavedQuestionsParams,
+  GetUserByIdParams,
+  GetUserStatsParams,
   ToggleSaveQuestionParams,
   UpdateUserParams,
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 import Tag from "@/database/tag.model";
+import Answer from "@/database/answer.model";
 
 export async function getUserById(params: { userId: string }) {
   try {
@@ -153,6 +156,71 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
     }
     const savedQuestions = user.saved;
     return { questions: savedQuestions };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getUserInfo(params: GetUserByIdParams) {
+  try {
+    connectToDb();
+    const { userId } = params;
+    const user = await User.findOne({ clerkId: userId });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const totalQuestions = await Question.countDocuments({ author: user._id });
+    const totalAnswers = await Answer.countDocuments({ author: user._id });
+
+    return { user, totalQuestions, totalAnswers };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getUserQuestions(params: GetUserStatsParams) {
+  try {
+    connectToDb();
+    const { userId } = params;
+    const totalQuestions = await Question.countDocuments({ author: userId });
+    const userQuestion = await Question.find({ author: userId })
+      .sort({
+        views: -1,
+        upvotes: -1,
+      })
+      .populate({ path: "tags", model: Tag, select: "_id name" })
+      .populate({
+        path: "author",
+        model: User,
+        select: "_id clerkId name picture",
+      });
+
+    return { totalQuestions, questions: userQuestion };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getUserAnswer(params: GetUserStatsParams) {
+  try {
+    connectToDb();
+    const { userId } = params;
+    const totalAnswers = await Answer.countDocuments({ author: userId });
+    const userAnswer = await Answer.find({ author: userId })
+      .sort({
+        upvotes: -1,
+      })
+      .populate({ path: "question", model: Question, select: "_id title" })
+      .populate({
+        path: "author",
+        model: User,
+        select: "_id clerkId name picture",
+      });
+
+    return { totalAnswers, answers: userAnswer };
   } catch (error) {
     console.log(error);
     throw error;

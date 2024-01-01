@@ -11,7 +11,7 @@ interface Props {
     name: string;
   }[];
   answers: Array<object>;
-  upvotes: number;
+  upvotes: string[];
   views: number;
   createdAt: Date;
   author: {
@@ -19,6 +19,8 @@ interface Props {
     name: string;
     picture: string;
   };
+  clerkId?: string;
+  className?: string;
 }
 
 const QuestionCard = ({
@@ -30,9 +32,11 @@ const QuestionCard = ({
   upvotes,
   views,
   createdAt,
+  clerkId,
+  className,
 }: Props) => {
   return (
-    <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
+    <div className={`card-wrapper rounded-[10px] p-9 sm:px-11 ${className}`}>
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row ">
         <div className="">
           <span className="subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden">
@@ -64,7 +68,7 @@ const QuestionCard = ({
         <Metric
           imgUrl="/assets/icons/like.svg"
           alt="Upvotes"
-          value={formatAndDivideNumber(upvotes)}
+          value={formatAndDivideNumber(upvotes.length)}
           title=" Votes "
           textStyles="small-medium text-dark400_light800"
         />
