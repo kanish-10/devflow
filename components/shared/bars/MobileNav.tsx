@@ -23,12 +23,11 @@ const NavContent = () => {
           (pathname.includes(link.route) && link.route.length > 1) ||
           pathname === link.route;
         return (
-          <SheetClose
-            key={link.label}
-            asChild
-            className={`${isActive ? "primary-gradient rounded-lg text-light-900" : "text-dark300_light900"} flex items-center justify-start gap-4 bg-transparent p-4`}
-          >
-            <Link href={link.route} className="">
+          <SheetClose key={link.label} asChild>
+            <Link
+              href={link.route}
+              className={`${isActive ? "primary-gradient rounded-lg text-light-900" : "text-dark300_light900"} flex items-center justify-start gap-4 bg-transparent p-4`}
+            >
               <Image
                 src={link.imgURL}
                 alt={link.label}
@@ -61,7 +60,7 @@ const MobileNav = () => {
       </SheetTrigger>
       <SheetContent
         side="left"
-        className="background-light900_dark200 border-none "
+        className="background-light900_dark200 border-none"
       >
         <Link href="/" className="flex items-center gap-1 pb-5">
           <Image
