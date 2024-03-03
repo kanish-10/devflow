@@ -228,9 +228,9 @@ const QuestionForm = ({ mongoUserId }: { mongoUserId: string }) => {
           disabled={isSubmitting}
         >
           {isSubmitting ? (
-            <>{type === "edit" ? "Editing..." : "Posting Question..."}</>
+            <>{type !== "create" ? "Editing..." : "Posting Question..."}</>
           ) : (
-            <>{type === "edit" ? "Edit Question" : "Ask a Question"}</>
+            <>{type !== "create" ? "Edit Question" : "Ask a Question"}</>
           )}
         </Button>
       </form>
