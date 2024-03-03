@@ -21,6 +21,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { useTheme } from "@/context/ThemeProvider";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+import { createQuestion } from "@/lib/actions/question.action";
 
 const QuestionForm = () => {
   const type = "create";
@@ -37,10 +38,10 @@ const QuestionForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof QuestionFormSchema>) {
+  async function onSubmit(values: z.infer<typeof QuestionFormSchema>) {
     setIsSubmitting(true);
     try {
-      // Done
+      await createQuestion();
     } catch (e) {
       console.log(e);
     } finally {
