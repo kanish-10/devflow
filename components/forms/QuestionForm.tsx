@@ -22,12 +22,15 @@ import { useTheme } from "@/context/ThemeProvider";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { createQuestion } from "@/lib/actions/question.action";
+import { usePathname, useRouter } from "next/navigation";
 
-const QuestionForm = () => {
+const QuestionForm = ({ mongoUserId }: { mongoUserId: string }) => {
   const type = "create";
   const editorRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { mode } = useTheme();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const form = useForm<z.infer<typeof QuestionFormSchema>>({
     resolver: zodResolver(QuestionFormSchema),
@@ -41,7 +44,15 @@ const QuestionForm = () => {
   async function onSubmit(values: z.infer<typeof QuestionFormSchema>) {
     setIsSubmitting(true);
     try {
-      await createQuestion();
+      await createQuestion({
+        title: values.title,
+        content: values.explanation,
+        tags: values.tags,
+        author: JSON.parse(mongoUserId),
+        path: pathname,
+      });
+
+      router.push("/");
     } catch (e) {
       console.log(e);
     } finally {
