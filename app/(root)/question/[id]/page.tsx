@@ -42,7 +42,22 @@ const QuestionIdPage = async ({ params }: { params: { id: string } }) => {
             </p>
           </Link>
           <div className="flex justify-end">
-            <Votes />
+            <Votes
+              type="question"
+              itemId={JSON.stringify(result._id)}
+              userId={JSON.stringify(mongoUser._id)}
+              upvotes={result.upvotes.length}
+              hasUpvoted={
+                mongoUser ? result.upvotes.includes(mongoUser._id) : false
+              }
+              downvotes={result.downvotes.length}
+              hasDownvoted={
+                mongoUser ? result.downvotes.includes(mongoUser._id) : false
+              }
+              hasSaved={
+                mongoUser ? mongoUser?.saved.includes(result._id) : false
+              }
+            />
           </div>
         </div>
         <h2 className="h2-semibold text-dark200_light900 mt-3.5 w-full text-left">
@@ -80,7 +95,7 @@ const QuestionIdPage = async ({ params }: { params: { id: string } }) => {
       </div>
       <AllAnswers
         questionId={JSON.stringify(result._id)}
-        userId={JSON.stringify(mongoUser._id)}
+        userId={mongoUser._id}
         totalAnswers={result.answers.length}
       />
       <AnswerForm
