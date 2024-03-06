@@ -39,3 +39,10 @@ export const getFormattedNumber = (number: number): string => {
   if (number < 1000000000) return `${(number / 1000000).toFixed(1)}M`; // Convert to M for number from 1 million < n < 1 billion
   return `${(number / 1000000000).toFixed(1)}B`; // Convert to B for number n > 1 billion
 };
+
+export const getFormattedJoinedDate = (date: Date): string => {
+  const month: string = date.toLocaleString("en", { month: "long" });
+  const year: number = date.getFullYear();
+
+  return `Joined ${month} ${year}`;
+};

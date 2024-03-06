@@ -14,7 +14,7 @@ import { sidebarLinks } from "@/constants";
 import { usePathname } from "next/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const NavContent = () => {
+const NavContent = ({ userId }: { userId: string | null }) => {
   const pathname = usePathname();
   return (
     <section className="flex h-full flex-col gap-6 pt-5">
@@ -22,6 +22,15 @@ const NavContent = () => {
         const isActive =
           (pathname.includes(link.route) && link.route.length > 1) ||
           pathname === link.route;
+
+        if (link.route === "/profile") {
+          if (userId) {
+            link.route = `/profile/${userId}`;
+          } else {
+            return null;
+          }
+        }
+
         return (
           <SheetClose key={link.label} asChild>
             <Link
@@ -46,7 +55,7 @@ const NavContent = () => {
   );
 };
 
-const MobileNav = () => {
+const MobileNav = ({ userId }: { userId: string | null }) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -76,7 +85,7 @@ const MobileNav = () => {
         <ScrollArea className="h-[550px]">
           <div>
             <SheetClose asChild>
-              <NavContent />
+              <NavContent userId={userId} />
             </SheetClose>
             <SignedOut>
               <div className="flex flex-col gap-3">

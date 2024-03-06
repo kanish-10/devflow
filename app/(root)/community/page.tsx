@@ -2,8 +2,8 @@ import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import Filter from "@/components/shared/Filter";
 import { UserFilters } from "@/constants/filters";
 import { getAllUsers } from "@/lib/actions/user.action";
-import Link from "next/link";
 import UserCard from "@/components/cards/UserCard";
+import NoResult from "@/components/shared/NoResult";
 
 const CommunityPage = async () => {
   const result = await getAllUsers({});
@@ -29,10 +29,12 @@ const CommunityPage = async () => {
           result.users.map((user) => <UserCard key={user.name} user={user} />)
         ) : (
           <div className="paragraph-regular text-dark200_light800 mx-auto max-w-4xl text-center">
-            <p className="">No users yet</p>
-            <Link href="/sign-up" className="mt-2 font-bold text-accent-blue">
-              Join to be the first
-            </Link>
+            <NoResult
+              title="No users yet"
+              description="Be the first to break the silence! 🚀 Ask a Question and kickstart the discussion. Our query could be the next big thing others learn from. Get involved! 💡"
+              link="/sign-in"
+              linkTitle="Join to be the first"
+            />
           </div>
         )}
       </section>

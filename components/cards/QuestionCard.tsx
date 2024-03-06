@@ -4,6 +4,7 @@ import Metric from "@/components/shared/Metric";
 import { getFormattedNumber, getTimestamp } from "@/lib/utils";
 
 interface QuestionCardProps {
+  clerkId?: string | null;
   _id: string;
   title: string;
   tags: {
@@ -22,6 +23,7 @@ interface QuestionCardProps {
 }
 
 const QuestionCard = ({
+  clerkId,
   _id,
   answers,
   author,

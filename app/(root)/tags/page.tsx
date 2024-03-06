@@ -51,7 +51,7 @@ const TagsPage = async () => {
             title="No tags found"
             link={`/ask-question`}
             linkTitle="Ask a question"
-            description="It looks like there are no tags."
+            description="It looks like there are no tags. Be the first one to ask question and add appropriate tags to them."
           />
         )}
       </section>
