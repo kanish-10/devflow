@@ -9,6 +9,8 @@ import {
 } from "@/lib/actions/question.action";
 import { downVoteAnswer, upVoteAnswer } from "@/lib/actions/answer.action";
 import { toggleSaveQuestion } from "@/lib/actions/user.action";
+import { useEffect } from "react";
+import { viewQuestion } from "@/lib/actions/interaction.action";
 
 interface VotesProps {
   type: "question" | "answer";
@@ -44,6 +46,13 @@ const Votes = ({
       questionId: JSON.parse(itemId),
     });
   };
+
+  useEffect(() => {
+    viewQuestion({
+      questionId: JSON.parse(itemId),
+      userId: userId ? JSON.parse(userId) : undefined,
+    });
+  }, [itemId, userId, pathname, router]);
 
   const handleVote = async (action: "upvote" | "downvote") => {
     if (!userId) {
