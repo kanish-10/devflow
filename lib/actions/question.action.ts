@@ -6,11 +6,16 @@ import Tag from "@/database/tag.model";
 import User from "@/database/user.model";
 import {
   CreateQuestionParams,
+  DeleteQuestionParams,
+  EditQuestionParams,
   GetQuestionByIdParams,
   GetQuestionsParams,
   QuestionVoteParams,
 } from "@/lib/actions/shared.types";
 import { revalidatePath } from "next/cache";
+import Answer from "@/database/answer.model";
+import Interaction from "@/database/interaction.model";
+import { redirect } from "next/navigation";
 
 export async function createQuestion(params: CreateQuestionParams) {
   try {
@@ -123,6 +128,44 @@ export async function downVoteQuestion(params: QuestionVoteParams) {
       new: true,
     });
     if (!question) throw new Error("Question not found");
+    revalidatePath(path);
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
+
+export async function deleteQuestion(params: DeleteQuestionParams) {
+  try {
+    await connectToDB();
+    const { questionId, path, isQuestionPath } = params;
+    await Question.deleteOne({ _id: questionId });
+    await Answer.deleteMany({ question: questionId });
+    await Interaction.deleteMany({ question: questionId });
+    await Tag.updateMany(
+      { questions: questionId },
+      { $pull: { questions: questionId } },
+    );
+    if (isQuestionPath) {
+      redirect("/");
+      return;
+    }
+    revalidatePath(path);
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
+
+export async function editQuestion(params: EditQuestionParams) {
+  try {
+    await connectToDB();
+    const { questionId, content, path, title } = params;
+    const question = await Question.findById(questionId).populate("tags");
+    if (!question) throw new Error("Question not found");
+    question.title = title;
+    question.content = content;
+    await question.save();
     revalidatePath(path);
   } catch (e) {
     console.log(e);
