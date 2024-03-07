@@ -32,7 +32,17 @@ export async function getTopInteractiveTags(
 export async function getAllTags(params: GetAllTagsParams) {
   try {
     await connectToDB();
-    const tags = await Tag.find({});
+    const { searchQuery } = params;
+    const query: FilterQuery<typeof Tag> = {
+      questions: { $exists: true, $ne: [] },
+    };
+    if (searchQuery) {
+      query.$and = [
+        { $or: [{ name: { $regex: new RegExp(searchQuery, "i") } }] },
+        { questions: { $exists: true, $ne: [] } },
+      ];
+    }
+    const tags = await Tag.find(query);
     return { tags };
   } catch (e) {
     console.log(e);
