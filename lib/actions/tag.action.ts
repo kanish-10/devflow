@@ -69,3 +69,19 @@ export async function getQuestionsByTagId(params: GetQuestionByTagIdParams) {
     throw e;
   }
 }
+
+export async function getTopPopularTags() {
+  try {
+    await connectToDB();
+    const popularTags = await Tag.aggregate([
+      { $match: { questions: { $exists: true, $ne: [] } } },
+      { $project: { name: 1, numberOfQuestions: { $size: "$questions" } } },
+      { $sort: { numberOfQuestions: -1 } },
+      { $limit: 5 },
+    ]);
+    return popularTags;
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}

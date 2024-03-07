@@ -172,3 +172,19 @@ export async function editQuestion(params: EditQuestionParams) {
     throw e;
   }
 }
+
+export async function getHotQuestions() {
+  try {
+    await connectToDB();
+    const hotQuestions = await Question.find({})
+      .sort({
+        views: -1,
+        upvotes: -1,
+      })
+      .limit(5);
+    return hotQuestions;
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
