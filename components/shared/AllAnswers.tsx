@@ -11,14 +11,23 @@ interface AllAnswersProps {
   questionId: string;
   userId: string;
   totalAnswers: number;
+  filter?: string;
+  page?: number | string;
 }
 
 const AllAnswers = async ({
   questionId,
   totalAnswers,
   userId,
+  filter,
+  page,
 }: AllAnswersProps) => {
-  const result = await getAnswers({ questionId: JSON.parse(questionId) });
+  const result = await getAnswers({
+    questionId: JSON.parse(questionId),
+    page: page ? +page : 1,
+    sortBy: filter,
+  });
+  console.log(filter);
   return (
     <div className="mt-11">
       <div className="flex items-center justify-between">

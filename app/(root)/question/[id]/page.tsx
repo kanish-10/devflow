@@ -10,8 +10,9 @@ import { auth } from "@clerk/nextjs";
 import { getUserById } from "@/lib/actions/user.action";
 import AllAnswers from "@/components/shared/AllAnswers";
 import Votes from "@/components/shared/Votes";
+import { URLProps } from "@/types";
 
-const QuestionIdPage = async ({ params }: { params: { id: string } }) => {
+const QuestionIdPage = async ({ params, searchParams }: URLProps) => {
   const { userId: clerkId } = auth();
   const result = await getQuestionById({ questionId: params.id });
   let mongoUser;
@@ -97,6 +98,10 @@ const QuestionIdPage = async ({ params }: { params: { id: string } }) => {
         questionId={JSON.stringify(result._id)}
         userId={mongoUser._id}
         totalAnswers={result.answers.length}
+        // @ts-ignore
+        page={searchParams?.page}
+        // @ts-ignore
+        filter={searchParams?.filter}
       />
       <AnswerForm
         questionId={JSON.stringify(result._id)}
