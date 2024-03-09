@@ -28,6 +28,7 @@ interface AnswerFormProps {
 const AnswerForm = ({ questionId, authorId, question }: AnswerFormProps) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmittingAI, setIsSubmittingAI] = useState(false);
   const { mode } = useTheme();
   const editorRef = useRef(null);
   const pathname = usePathname();
@@ -38,6 +39,31 @@ const AnswerForm = ({ questionId, authorId, question }: AnswerFormProps) => {
       answer: "",
     },
   });
+
+  const generateAIAnswer = async () => {
+    if (!authorId) {
+      router.push("/sign-in");
+      return;
+    }
+    setIsSubmittingAI(true);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt`,
+        { method: "POST", body: JSON.stringify({ question }) },
+      );
+
+      const aiAnswer = await response.json();
+      const formattedAnswer = aiAnswer.reply.replace(/\n/g, "<br />");
+      if (editorRef.current) {
+        const editor = editorRef.current as any;
+        editor.setContent(formattedAnswer);
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsSubmittingAI(false);
+    }
+  };
 
   const handleCreateAnswer = async (
     values: z.infer<typeof AnswerFormSchema>,
@@ -73,7 +99,8 @@ const AnswerForm = ({ questionId, authorId, question }: AnswerFormProps) => {
           Write your answer
         </h4>
         <Button
-          onClick={() => {}}
+          disabled={isSubmittingAI}
+          onClick={generateAIAnswer}
           className="btn light-border-2 gap-1.5 rounded-md px-4 py-2.5 text-primary-500 shadow-none dark:text-primary-500"
         >
           <Image
@@ -83,7 +110,7 @@ const AnswerForm = ({ questionId, authorId, question }: AnswerFormProps) => {
             height={12}
             className="object-contain"
           />
-          Generate an AI Answer
+          {isSubmittingAI ? "Generating..." : "Generate AI Answer"}
         </Button>
       </div>
       <Form {...form}>
