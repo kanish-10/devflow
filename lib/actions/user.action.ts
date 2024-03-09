@@ -172,7 +172,7 @@ export async function getSavedQuestions(params: GetSavedQuestionParams) {
       options: {
         sort: sortOptions,
         skip: skipAmount,
-        limit: page,
+        limit: pageSize,
       },
       populate: [
         { path: "tags", model: Tag, select: "_id name" },
