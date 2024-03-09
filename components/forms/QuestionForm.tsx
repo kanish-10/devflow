@@ -23,6 +23,7 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { createQuestion, editQuestion } from "@/lib/actions/question.action";
 import { usePathname, useRouter } from "next/navigation";
+import { toast } from "@/components/ui/use-toast";
 
 interface QuestionFormProps {
   mongoUserId: string;
@@ -65,6 +66,9 @@ const QuestionForm = ({
           author: JSON.parse(mongoUserId),
           path: pathname,
         });
+        toast({
+          title: `Question created Successfully`,
+        });
         router.push("/");
       } else {
         await editQuestion({
@@ -72,6 +76,9 @@ const QuestionForm = ({
           content: values.explanation,
           path: pathname,
           questionId: parseQuestionDetails._id,
+        });
+        toast({
+          title: `Question edited successfully`,
         });
         router.push(`/question/${parseQuestionDetails._id}`);
       }

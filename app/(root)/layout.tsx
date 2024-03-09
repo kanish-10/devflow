@@ -3,6 +3,7 @@ import Navbar from "@/components/shared/bars/Navbar";
 import LeftSidebar from "@/components/shared/bars/LeftSidebar";
 import RightSidebar from "@/components/shared/bars/RightSidebar";
 import { auth } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/toaster";
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   const { userId } = auth();
@@ -16,7 +17,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         </section>
         <RightSidebar />
       </div>
-      Toaster
+      <Toaster />
     </main>
   );
 };

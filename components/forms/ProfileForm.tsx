@@ -19,6 +19,7 @@ import React, { useState } from "react";
 import { ProfileFormSchema } from "@/lib/validations";
 import { usePathname, useRouter } from "next/navigation";
 import { updateUser } from "@/lib/actions/user.action";
+import { toast } from "@/components/ui/use-toast";
 
 interface ProfileFormProps {
   clerkId: string;
@@ -55,6 +56,9 @@ const ProfileForm = ({ clerkId, user }: ProfileFormProps) => {
           location: values.location,
         },
         path,
+      });
+      toast({
+        title: `Profile updated successfully`,
       });
       router.back();
     } catch (e) {

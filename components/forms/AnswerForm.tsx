@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { createAnswer } from "@/lib/actions/answer.action";
 import { usePathname, useRouter } from "next/navigation";
+import { toast } from "@/components/ui/use-toast";
 
 interface AnswerFormProps {
   questionId: string;
@@ -42,8 +43,10 @@ const AnswerForm = ({ questionId, authorId, question }: AnswerFormProps) => {
 
   const generateAIAnswer = async () => {
     if (!authorId) {
-      router.push("/sign-in");
-      return;
+      return toast({
+        title: "You must be log in to answer the question.",
+        variant: "destructive",
+      });
     }
     setIsSubmittingAI(true);
     try {
@@ -69,8 +72,10 @@ const AnswerForm = ({ questionId, authorId, question }: AnswerFormProps) => {
     values: z.infer<typeof AnswerFormSchema>,
   ) => {
     if (!authorId) {
-      router.push("/sign-in");
-      return;
+      return toast({
+        title: "You must be log in to answer the question.",
+        variant: "destructive",
+      });
     }
     try {
       setIsSubmitting(true);
