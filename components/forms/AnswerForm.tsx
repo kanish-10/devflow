@@ -17,7 +17,7 @@ import { useTheme } from "@/context/ThemeProvider";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { createAnswer } from "@/lib/actions/answer.action";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
 
 interface AnswerFormProps {
@@ -27,7 +27,6 @@ interface AnswerFormProps {
 }
 
 const AnswerForm = ({ questionId, authorId, question }: AnswerFormProps) => {
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmittingAI, setIsSubmittingAI] = useState(false);
   const { mode } = useTheme();
